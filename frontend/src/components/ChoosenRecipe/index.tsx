@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { HomeIcon, UnSaveIcon } from "../icons";
 import { useEffect, useState } from "react";
+import { SavedRecipeInterface } from "../types";
 
 const ChoosenRecipes = () => {
-    const [savedRecipes, setSavedRecipes] = useState<{ idMeal: string; strMeal: string; strMealThumb: string; strCategory: string; strInstructions: string; [key: string]: any }[]>([]);
+    const [savedRecipes, setSavedRecipes] = useState<SavedRecipeInterface[]>([]);
 
     useEffect(() => {
         const saved = localStorage.getItem('savedRecipes');

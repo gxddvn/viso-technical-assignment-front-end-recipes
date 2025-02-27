@@ -1,19 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { HomeIcon } from "../icons";
-
-const fetchRecipe = async (id: string) => {
-    const { data } = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-    return data.meals[0];
-};
+import { fetchRecipeById } from "../req";
 
 const Recipe = () => {
     const { id } = useParams();
     const { data: recipe, isLoading, error } = useQuery({
         queryKey: ['recipe', id],
-        queryFn: () => fetchRecipe(id!),
+        queryFn: () => fetchRecipeById(id!),
         enabled: !!id
     });
 
