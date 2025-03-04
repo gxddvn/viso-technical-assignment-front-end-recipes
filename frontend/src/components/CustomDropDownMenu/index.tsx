@@ -1,6 +1,6 @@
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
-import { CustomDropDownMenuInterface } from '../types'
+import { CustomDropDownMenuInterface } from '../../types'
 
 const CustomDropDownMenu: React.FC<CustomDropDownMenuInterface> = ({button, children}) => {
     return (

@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { HomeIcon, UnSaveIcon } from "../icons";
 import { useEffect, useState } from "react";
-import { SavedRecipeInterface } from "../types";
+import { SavedRecipeInterface } from "../../types";
 
 const ChoosenRecipes = () => {
     const [savedRecipes, setSavedRecipes] = useState<SavedRecipeInterface[]>([]);

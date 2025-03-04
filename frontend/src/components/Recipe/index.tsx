@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { HomeIcon } from "../icons";
-import { fetchRecipeById } from "../req";
+import { fetchRecipeById } from "../../api";
 
 const Recipe = () => {
     const { id } = useParams();
