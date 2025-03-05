@@ -1,7 +1,7 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchCategories, fetchRecipeById, fetchRecipes, fetchRecipesByCategory, fetchSearch } from "./api";
-import { RecipeInterface, SearchInterface, UseChooseCategoryInterface, UseClearFiltersInterface, UsePaginationInterface, UseSearchInterface, UseTotalPagesInterface } from "./types";
+import { IngredientInterface, RecipeInterface, SearchInterface, UseCalculateIngredientsInterface, UseChooseCategoryInterface, UseClearFiltersInterface, UseConvertIngredientsInterface, UsePaginationInterface, UseRemoveRecipesInterface, UseSearchInterface, UseTotalPagesInterface } from "./types";
 
 export const useRecipes = () => {
     return useQuery({
@@ -9,6 +9,13 @@ export const useRecipes = () => {
         queryFn: () => fetchRecipes()
     });
 };
+
+export const useRecipesId = (id: string) => {
+    return useQuery({
+        queryKey: ['recipe', id],
+        queryFn: () => fetchRecipeById(id)
+    })
+}
 
 export const useRecipesByCategory = (currentCategory:string) => {
     return useQuery({
@@ -122,5 +129,60 @@ export const useClearFilters = ({setCurrentCategory, setSearchResults, setSearch
         setCurrentCategory('Chicken');
         setSearchResults([]);
         setSearchQuery('');
+    }, []);
+}
+
+export const useConvertIngredients = ({recipe}: UseConvertIngredientsInterface) => {
+    return useCallback(() => {
+        if (!recipe) return [];
+        const ingredientsMap: Map<string, string> = new Map();
+
+        for (let i = 1; recipe[`strIngredient${i}`]; i++) {
+            const ingredient = recipe[`strIngredient${i}`];
+            const measure = recipe[`strMeasure${i}`];
+
+            if (ingredient) {
+                if (ingredientsMap.has(ingredient)) {
+                    ingredientsMap.set(ingredient, `${ingredientsMap.get(ingredient)}, ${measure}`);
+                } else {
+                    ingredientsMap.set(ingredient, measure || "");
+                }
+            }
+        }
+
+        return Array.from(ingredientsMap, ([ingredient, measure]) => ({ ingredient, measure }));
+    }, [recipe])
+}
+
+export const useCalculateIngredients = ({savedRecipes}: UseCalculateIngredientsInterface) => {
+    return useCallback((): IngredientInterface[] => {
+        const ingredientsMap: Map<string, string> = new Map();
+
+        savedRecipes.forEach((recipe) => {
+            for (let i = 1; recipe[`strIngredient${i}`]; i++) {
+                const ingredient = recipe[`strIngredient${i}`];
+                const measure = recipe[`strMeasure${i}`];
+
+                if (ingredient) {
+                    if (ingredientsMap.has(ingredient)) {
+                        ingredientsMap.set(ingredient, `${ingredientsMap.get(ingredient)}, ${measure}`);
+                    } else {
+                        ingredientsMap.set(ingredient, measure || "");
+                    }
+                }
+            }
+        });
+
+        return Array.from(ingredientsMap, ([ingredient, measure]) => ({ ingredient, measure }));
+    }, [savedRecipes]);
+}
+
+export const useRemoveRecipes = ({setSavedRecipes}: UseRemoveRecipesInterface) => {
+    return useCallback((idMeal: string) => {
+        setSavedRecipes((prevSavedRecipes) => {
+            const updatedRecipes = prevSavedRecipes.filter((recipe) => recipe.idMeal !== idMeal);
+            localStorage.setItem('savedRecipes', JSON.stringify(updatedRecipes));
+            return updatedRecipes;
+        });
     }, []);
 }

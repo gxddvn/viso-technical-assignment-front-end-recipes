@@ -18,7 +18,7 @@ const Home = () => {
     const { data: recipes, isLoading: isLoadingRecipes } = useRecipes()
     const { data: categories, isLoading: isLoadingCategories } = useCategories();
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchResults, setSearchResults] = useState([]);
+    const [searchResults, setSearchResults] = useState<RecipeInterface[]>([]);
     const [savedRecipes, setSavedRecipes] = useState<RecipeInterface[]>(() => {
         const saved = localStorage.getItem('savedRecipes');
         return saved ? JSON.parse(saved) : [];

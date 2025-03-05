@@ -1,12 +1,23 @@
 import { UseMutationResult } from "@tanstack/react-query";
 import { UseFormHandleSubmit, UseFormRegister, UseFormReset } from "react-hook-form";
 
-export interface RecipeInterface { 
-    idMeal: string; 
-    strMeal: string; 
-    strMealThumb: string; 
-    strCategory: string 
-}
+export interface RecipeInterface {
+    idMeal: string;
+    strMeal: string;
+    strCategory: string;
+    strArea: string;
+    strInstructions: string;
+    strMealThumb: string;
+    strYoutube: string;
+    strMealAlternate?: string | null;
+    strTags?: string | null;
+    strSource?: string | null;
+    strImageSource?: string | null;
+    strCreativeCommonsConfirmed?: string | null;
+    dateModified?: string | null;
+    [key: `strIngredient${number}`]: string | undefined;
+    [key: `strMeasure${number}`]: string | undefined;
+}  
 
 export interface CategoryInterface {
     idCategory: string;
@@ -21,7 +32,7 @@ export interface SavedRecipeInterface {
     strMealThumb: string; 
     strCategory: string; 
     strInstructions: string; 
-    [key: string]: any; 
+    [key: string]: string; 
 }
 
 export interface CustomDropDownMenuInterface {
@@ -30,7 +41,7 @@ export interface CustomDropDownMenuInterface {
 }
 
 export interface UseSearchInterface {
-    setSearchResults: React.Dispatch<React.SetStateAction<never[]>>; 
+    setSearchResults: React.Dispatch<React.SetStateAction<RecipeInterface[]>>; 
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>; 
     reset: UseFormReset<{search: string;}>;
 }
@@ -40,7 +51,7 @@ export interface SearchInterface {
 }
 
 export interface UseChooseCategoryInterface {
-    setSearchResults: React.Dispatch<React.SetStateAction<never[]>>; 
+    setSearchResults: React.Dispatch<React.SetStateAction<RecipeInterface[]>>; 
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>; 
     setCurrentCategory:React.Dispatch<React.SetStateAction<string>>;
     setCurrentPage:  React.Dispatch<React.SetStateAction<number>>;
@@ -48,7 +59,7 @@ export interface UseChooseCategoryInterface {
 
 export interface UseClearFiltersInterface {
     setCurrentCategory:React.Dispatch<React.SetStateAction<string>>;
-    setSearchResults: React.Dispatch<React.SetStateAction<never[]>>; 
+    setSearchResults: React.Dispatch<React.SetStateAction<RecipeInterface[]>>; 
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>; 
 }
 
@@ -98,4 +109,39 @@ export interface FilterTagBarInterface {
     currentCategory: string;
     searchQuery: string;
     clearFilters: () => void;
+}
+
+export interface IngredientInterface {
+    ingredient: string;
+    measure: string;
+}
+
+export interface IngredientTableInterface {
+    ingredients: IngredientInterface[];
+}
+
+export interface RecipeTagsInterface {
+    strTags: string;
+}
+
+export interface UseConvertIngredientsInterface {
+    recipe: RecipeInterface | undefined
+}
+
+export interface UseCalculateIngredientsInterface {
+    savedRecipes: SavedRecipeInterface[]
+}
+
+export interface UseRemoveRecipesInterface {
+    setSavedRecipes: React.Dispatch<React.SetStateAction<SavedRecipeInterface[]>>;
+}
+
+export interface DisplaySavedRecipesInterface {
+    savedRecipes: SavedRecipeInterface[];
+    removeRecipe: (idMeal: string) => void;
+}
+
+export interface DisplayInstructionInterface {
+    savedRecipes: SavedRecipeInterface[];
+    removeRecipe: (idMeal: string) => void;
 }

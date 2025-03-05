@@ -17,7 +17,7 @@ export const fetchCategories = async () => {
 };
 
 export const fetchRecipeById = async (id: string) => {
-    const { data } = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const { data } = await axios.get<{ meals: RecipeInterface[] }>(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
     return data.meals[0];
 };
 
